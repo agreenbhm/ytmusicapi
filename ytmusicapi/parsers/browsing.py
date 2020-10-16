@@ -176,10 +176,14 @@ def parse_video(result):
 
 
 def parse_playlist(data):
+    try:
+        playlistId = nav(data, TITLE + NAVIGATION_BROWSE_ID, none_if_absent=True)[2:]
+    except:
+        playlistId = nav(data, TITLE + NAVIGATION_BROWSE_ID, none_if_absent=True)
     playlist = {
-        'title': nav(data, TITLE_TEXT),
-        'playlistId': nav(data, TITLE + NAVIGATION_BROWSE_ID)[2:],
-        'thumbnails': nav(data, THUMBNAIL_RENDERER)
+        'title': nav(data, TITLE_TEXT, none_if_absent=True),
+        'playlistId': playlistId,
+        'thumbnails': nav(data, THUMBNAIL_RENDERER, none_if_absent=True)
     }
     if len(data['subtitle']['runs']) == 3:
         playlist['count'] = nav(data, SUBTITLE2).split(' ')[0]
